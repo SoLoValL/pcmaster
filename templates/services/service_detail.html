@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.title }} — PC Master{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'services:list' %}">Услуги</a></li>
+                <li class="breadcrumb-item active">{{ service.title }}</li>
+            </ol>
+        </nav>
+
+        <h1>{{ service.title }}</h1>
+        <p class="text-muted">
+            <span class="badge bg-secondary">{{ service.get_device_type_display }}</span>
+        </p>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Описание</h5>
+                <p class="card-text">{{ service.description|linebreaks }}</p>
+            </div>
+        </div>
+
+        <!-- Leave a ticket CTA -->
+        <a href="{% url 'tickets:create' %}" class="btn btn-success btn-lg">
+            <i class="bi bi-envelope-plus"></i> Оставить заявку на ремонт
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card sticky-top" style="top: 2rem;">
+            <div class="card-body">
+                <h3 class="text-primary">{{ service.price }} ₽</h3>
+                <p class="text-muted">Ориентировочная стоимость</p>
+                <hr>
+                <p><i class="bi bi-clock"></i> <strong>Длительность:</strong> ~{{ service.duration_hours }} ч.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

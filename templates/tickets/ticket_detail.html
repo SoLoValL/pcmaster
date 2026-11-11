@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Заявка #{{ ticket.pk }} — PC Master{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'tickets:list' %}">Заявки</a></li>
+        <li class="breadcrumb-item active">#{{ ticket.pk }}</li>
+    </ol>
+</nav>
+
+<h1>Заявка #{{ ticket.pk }}</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Устройство:</strong> {{ ticket.get_device_type_display }}</p>
+        <p><strong>Проблема:</strong></p>
+        <p>{{ ticket.problem|linebreaks }}</p>
+
+        {% if ticket.preferred_at %}
+        <p><strong>Удобное время:</strong> {{ ticket.preferred_at|date:"d.m.Y H:i" }}</p>
+        {% endif %}
+        {% if ticket.address %}
+        <p><strong>Адрес:</strong> {{ ticket.address }}</p>
+        {% endif %}
+
+        <hr>
+        <p>
+            <span class="badge bg-{% if ticket.is_active %}success{% else %}secondary{% endif %}">
+                {{ ticket.get_status_display }}
+            </span>
+        </p>
+    </div>
+</div>
+
+<a href="{% url 'tickets:list' %}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> К списку заявок
+</a>
+{% endblock %}

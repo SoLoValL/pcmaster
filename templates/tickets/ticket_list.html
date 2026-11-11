@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои заявки — PC Master{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-ticket-perforated"></i> Мои заявки</h1>
+    <a href="{% url 'tickets:create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Новая заявка
+    </a>
+</div>
+
+{% if tickets %}
+<div class="list-group">
+    {% for ticket in tickets %}
+    <a href="{% url 'tickets:detail' ticket.pk %}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">#{{ ticket.pk }} — {{ ticket.get_device_type_display }}</h5>
+            <small class="text-muted">{{ ticket.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+        <p class="mb-1">{{ ticket.problem|truncatewords:15 }}</p>
+        <div>
+            <span class="badge bg-{% if ticket.is_active %}success{% else %}secondary{% endif %}">
+                {{ ticket.get_status_display }}
+            </span>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> У вас пока нет заявок.
+</div>
+{% endif %}
+{% endblock %}
